@@ -40,33 +40,31 @@
         <button type="submit" class="btn-submit">Register</button>
     </form>
     <script>
-        document.getElementById('registration-form').addEventListener('submit', function(event) {
-            // Prevent the form from submitting normally.
-            event.preventDefault();
-            const form = event.target;
-            const formData = new FormData(form);
-            const data = Object.fromEntries(formData.entries());
-            fetch('/register.js', { // Hardcoded the API endpoint for clarity
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(responseData => {
-                console.log('Success:', responseData);
-                window.location.href = 'confirmation.html';
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Registration failed. Please try again.');
-            });
+    document.getElementById('registration-form').addEventListener('submit', function(event) {
+        // Prevent the form from submitting normally.
+        event.preventDefault();
+
+        // --- Simulated server success for this front-end only example ---
+        // Instead of a real fetch, we use a Promise to simulate a successful API call.
+        new Promise(resolve => {
+            // Simulate a network delay (e.g., 500 milliseconds)
+            setTimeout(() => {
+                const formData = new FormData(event.target);
+                const data = Object.fromEntries(formData.entries());
+                console.log('Simulating server-side registration with data:', data);
+                resolve({ success: true, message: 'Registration successful!' });
+            }, 500);
+        })
+        .then(responseData => {
+            console.log('Success:', responseData);
+            // Redirect to the confirmation page after the simulated success
+            window.location.href = 'templates/confirmation.html';
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Registration failed. Please try again.');
         });
-    </script>
-</body>
-</html>
+    });
+</script>
+
 
