@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Mind Workshop Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"], input[type="email"], select {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .btn-submit {
+            background-color: #000;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Music Mind Workshop Registration</h1>
+
+    <form id="registration-form" action="/register.js" method="post">
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+            <label for="event">Select an Event:</label>
+            <select id="event" name="event" required>
+                <option value="">--Please choose an event--</option>
+                <option value="guitar">Guitar Workshop</option>
+                <option value="piano">Piano Fundamentals</option>
+                <option value="vocal">Vocal Training</option>
+            </select>
+        </div>
+        <button type="submit" class="btn-submit">Register</button>
+    </form>
+
+    <script>
+        document.getElementById('registration-form').addEventListener('submit', function(event) {
+            // Prevent the form from submitting normally.
+            event.preventDefault();
+
+            const form = event.target;
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+
+            fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                // Check for a JSON response from the server, if any.
+                return response.json(); 
+            })
+            .then(responseData => {
+                console.log('Success:', responseData);
+                // Redirect to the confirmation page on success.
+                window.location.href = 'templates/confirmation.html';;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Registration failed. Please try again.');
+            });
+        });
+    </script>
+
+</body>
+</html>
+
